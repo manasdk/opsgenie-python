@@ -48,7 +48,7 @@ class TestAlertResource(unittest.TestCase):
             alerts_response = self.api.get_resource("alert").list()
             alerts_list = alerts_response["alerts"]
             self.assertEqual(len(requests_mock.calls), 1)
-            self.assertEqual(alerts, fake_alerts_list)
+            self.assertEqual(alerts_list, fake_alerts_list)
 
     def generate_fake_alert(self, **set_values):
         alert = {
