@@ -13,12 +13,15 @@ long_description = """
 setup(
 	name = "opsgenie",
 	version = version,
-	description = "A Python client for the Opsgenie API",
+	description = "A Python client for the OpsGenie API",
     long_description = long_description,
 	url = "https://github.com/HurricaneLabs/opsgenie-python",
 	author = "Hurricane Labs",
 	author_email = "colton@hurricanelabs.com",
 	package_dir = {"":"src"},
 	packages = find_packages("src"),
+    install_requires = [
+        "requests"
+    ]
 )
 

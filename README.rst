@@ -1,7 +1,7 @@
 #########
-Opsgenie-Python
+OpsGenie-Python
 #########
-**A Python client for the Opsgenie API**
+**A Python client for the OpsGenie API**
 
 Features
 ========
