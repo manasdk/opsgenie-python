@@ -1,5 +1,3 @@
-import weakref
-
 class AlertResource:
     def __init__(self, opsgenie_api):
         self.api = opsgenie_api

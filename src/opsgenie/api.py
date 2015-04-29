@@ -4,7 +4,7 @@ from .alert import AlertResource
 
 class OpsGenieAPI:
     resource_map = {
-        "alerts":AlertResource
+        "alert":AlertResource
     }
 
     def __init__(self, api_key, url_base="https://api.opsgenie.com/v1/json/"):
