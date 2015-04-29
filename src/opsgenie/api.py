@@ -1,7 +1,5 @@
 import requests
 
-from .alert import AlertResource
-
 class OpsGenieAPI:
     def __init__(self, api_key, url_base="https://api.opsgenie.com/v1/json/"):
         self.api_key = api_key
@@ -12,12 +10,6 @@ class OpsGenieAPI:
         if url_base[-1] != "/":
             url_base += "/"
         self.url_base = url_base
-
-        self._resources = {}
-        for resource_name, resource_class in [
-        ("alerts", AlertResource) 
-        ]:
-            self._resources[resource_name] = resource_class(self, use_weakref=True)
 
     def get_url(self, path):
         if path.startswith("/"):
@@ -35,10 +27,3 @@ class OpsGenieAPI:
             return response_body
         else:
             return response
-       
-    def __getattr__(self, name):
-        if name in self._resources:
-            return self._resources[name]
-        else:
-            raise AttributeError("{0} instance has no attribute '{1}'".format(
-                self.__class__.__name__, name))
