@@ -1,6 +1,12 @@
 import requests
 
+from .alert import AlertResource
+
 class OpsGenieAPI:
+    resource_map = {
+        "alerts":AlertResource
+    }
+
     def __init__(self, api_key, url_base="https://api.opsgenie.com/v1/json/"):
         self.api_key = api_key
 
@@ -27,3 +33,10 @@ class OpsGenieAPI:
             return response_body
         else:
             return response
+
+    def get_resource(self, resource_name, *args, **kwargs):
+        if resource_name not in self.resource_map:
+            raise ValueError("{0} is not one of the available resources: {1}".format(
+                resource_name, self.resource_map.keys()))
+        return self.resource_map[resource_name](self, *args, **kwargs)
+            
