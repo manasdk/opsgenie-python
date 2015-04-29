@@ -41,7 +41,7 @@ class TestAlertResource(unittest.TestCase):
                 "https://api.opsgenie.com/v1/json/alert",
                 body=json.dumps({
                     "alerts":fake_alerts_list
-                    })
+                    }),
                 status=200,
                 content_type="application/json"
             )
@@ -62,9 +62,9 @@ class TestAlertResource(unittest.TestCase):
             #No actions at this time check back later
             "source":fauxfactory.gen_string("alphanumeric", random.randint(1,30)),
             "tags":",".join([fauxfactory.gen_string("alphanumeric", random.randint(1,30))
-                for x in range(0, random.randint(0,5))],
-            "details":{fauxfactory.gen_string("alphanumeric", random.randint(1,30), 
-                fauxfactory.gen_string("alphanumeric", random.randint(1,30) for x in range(
+                for x in range(0, random.randint(0,5))]),
+            "details":{fauxfactory.gen_string("alphanumeric", random.randint(1,30)): 
+                fauxfactory.gen_string("alphanumeric", random.randint(1,30)) for x in range(
                     0, random.randint(0,5))},
             "entity":fauxfactory.gen_string("alphanumeric", random.randint(1,30)),
             "user":fauxfactory.gen_string("alphanumeric", random.randint(1,30)),
