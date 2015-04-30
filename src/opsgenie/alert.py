@@ -1,4 +1,6 @@
-class AlertResource:
+from .resource import BaseResource
+
+class AlertResource(BaseResource):
     def __init__(self, opsgenie_api):
         self.api = opsgenie_api
         self.path = "alert"
@@ -9,11 +11,5 @@ class AlertResource:
         response_body = self._post(alert_dict)
         return response_body
 
-    def list(self):
-        return self._get()
-
-    def _get(self):
-        return self.api.get(self.path)
-
-    def _post(self, body_dict, **kwargs):
-        return self.api.post(self.path, body_dict, **kwargs)
+    def list(self, **optional_params):
+        return self._get(params=optiona_params)
