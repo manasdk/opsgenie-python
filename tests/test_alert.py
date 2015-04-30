@@ -47,13 +47,12 @@ class TestAlertResource(unittest.TestCase):
                 content_type="application/json"
             )
             alerts_response = self.api.get_resource("alert").list(status="unacked")
-            alerts_list = alerts_response["alerts"]
             alerts_request = requests_mock.calls[0].request
             self.assertEqual(len(requests_mock.calls), 1)
             query_string = urllib.parse.urlparse(alerts_request.path_url).query
             request_params = urllib.parse.parse_qs(query_string)
             self.assertEqual(request_params["status"][0], "unacked")
-            self.assertEqual(alerts_list, fake_alerts_list)
+            self.assertEqual(alerts_response, fake_alerts_list)
 
     def generate_fake_alert(self, **set_values):
         alert = {
