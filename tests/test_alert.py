@@ -62,6 +62,29 @@ class TestAlertResource(unittest.TestCase):
     def test_update_id_error(self):
         with self.assertRaises(ValueError):
             self.resource.update(message="no id specified")
+
+    def test_get(self):
+        fake_alert = self.generate_fake_alert()
+        alert_id = fake_alert["id"]
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(
+                requests_mock.GET,
+                "https://api.opsgenie.com/v1/json/alert",
+                body=json.dumps(fake_alert),
+                status=200,
+                content_type="application/json"
+            )
+            alert_result = self.resource.get(id=alert_id)
+            alert_request = requests_mock.calls[0].request
+            query_string = urllib.parse.urlparse(alert_request.path_url).query
+            request_params = urllib.parse.parse_qs(query_string)
+            self.assertEqual(request_params["id"][0], alert_id)
+            for alert_key, alert_val in fake_alert.items():
+                self.assertEqual(alert_result[alert_key], alert_val)
+
+    def test_get_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.get()
             
     def test_list(self):
         fake_alerts_list = [self.generate_fake_alert() for x in range(0, random.randint(0,5))]
