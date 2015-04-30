@@ -39,6 +39,30 @@ class TestAlertResource(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.resource.create("foo message", id=str(uuid.uuid4()))
 
+    def test_update(self):
+        alert_id = str(uuid.uuid4())
+        response_body = json.dumps(
+            {'message': 'alert created', 'code': 200, 'status': 'successful', 
+            'alertId': alert_id, 'took': 126})
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(
+                requests_mock.POST,
+                "https://api.opsgenie.com/v1/json/alert",
+                body=response_body,
+                status=200,
+                content_type="application/json"
+            )
+            new_message = fauxfactory.gen_string("alphanumeric", random.randint(1,130))
+            update_result = self.resource.update(id=alert_id, message=new_message)
+            self.assertEquals(update_result["alertId"], alert_id)
+            alert_request = json.loads(requests_mock.calls[0].request.body)
+            self.assertEquals(alert_request["id"], alert_id)
+            self.assertEquals(alert_request["message"], new_message)
+
+    def test_update_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.update(message="no id specified")
+            
     def test_list(self):
         fake_alerts_list = [self.generate_fake_alert() for x in range(0, random.randint(0,5))]
         with responses.RequestsMock() as requests_mock:
@@ -62,6 +86,7 @@ class TestAlertResource(unittest.TestCase):
     def test_list_id_error(self):
         with self.assertRaises(ValueError):
             self.resource.list(id=str(uuid.uuid4()))
+
 
     def generate_fake_alert(self, **set_values):
         alert = {
