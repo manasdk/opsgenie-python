@@ -12,4 +12,4 @@ class AlertResource(BaseResource):
         return response_body
 
     def list(self, **optional_params):
-        return self._get(params=optiona_params)
+        return self._get(params=optional_params)
