@@ -12,6 +12,7 @@ from opsgenie.api import OpsGenieAPI
 class TestAlertResource(unittest.TestCase):
     def setUp(self):
         self.api = OpsGenieAPI("fake-api-key")
+        self.resource = self.api.get_resource("alert")
 
     def test_create(self):
         with responses.RequestsMock() as requests_mock:
@@ -24,7 +25,7 @@ class TestAlertResource(unittest.TestCase):
                 content_type="application/json"
             )
             test_message = str(uuid.uuid4())
-            alert_response = self.api.get_resource("alert").create(test_message)
+            alert_response = self.resource.create(test_message)
             self.assertEqual(alert_response["status"], "successful")
             self.assertEqual(len(requests_mock.calls), 1)
             alert_request = json.loads(requests_mock.calls[0].request.body)
@@ -33,6 +34,10 @@ class TestAlertResource(unittest.TestCase):
             }
             for request_key, request_value in check_request_vals.items():
                 self.assertEqual(alert_request[request_key], request_value)
+
+    def test_create_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.create("foo message", id=str(uuid.uuid4()))
 
     def test_list(self):
         fake_alerts_list = [self.generate_fake_alert() for x in range(0, random.randint(0,5))]
@@ -53,6 +58,10 @@ class TestAlertResource(unittest.TestCase):
             request_params = urllib.parse.parse_qs(query_string)
             self.assertEqual(request_params["status"][0], "unacked")
             self.assertEqual(alerts_response, fake_alerts_list)
+
+    def test_list_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.list(id=str(uuid.uuid4()))
 
     def generate_fake_alert(self, **set_values):
         alert = {
