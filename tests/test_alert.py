@@ -115,13 +115,13 @@ class TestAlertResource(unittest.TestCase):
         fake_owner = fauxfactory.gen_string("alphanumeric", random.randint(1,30))
         with responses.RequestsMock() as requests_mock:
             requests_mock.add(
-                requests_mock.GET,
+                requests_mock.POST,
                 "https://api.opsgenie.com/v1/json/alert/assign",
                 body=json.dumps({"status":"successful", "code":200}),
                 status=200,
                 content_type="application/json"
             )
-            assign_result = self.resource.assign(fake_owner, alertdId=fake_id)
+            assign_result = self.resource.assign(fake_owner, alertId=fake_id)
             self.assertEqual(len(requests_mock.calls), 1)
             assign_request = requests_mock.calls[0].request
             request_body = json.loads(assign_request.body)

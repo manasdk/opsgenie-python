@@ -46,6 +46,13 @@ class AlertResource(BaseResource):
         alerts_response = self._get(params=optional_params)
         return alerts_response["alerts"]
 
+    def assign(self, owner, **params):
+        #according to the docs, tinyId is not available for this?
+        if "alertId" not in params and "alias" not in params:
+            raise ValueError("You must specify either alertId or alias")
+        params["owner"] = owner
+        return self._post(params, path="/alert/assign")
+
     def contains_id_param(self, params):
         for need_param in self.id_params:
             if need_param in params:

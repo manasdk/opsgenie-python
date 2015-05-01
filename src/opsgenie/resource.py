@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 class BaseResource:
     """Provides a common base for resource classes
     
@@ -6,11 +8,15 @@ class BaseResource:
     path = None
     api = None
 
-    def _get(self, params={}, **kwargs):
-        return self.get_api().get(self.get_path(), params=params, **kwargs)
+    def _get(self, params={}, path=None, **kwargs):
+        if path is None:
+            path = self.get_path()
+        return self.get_api().get(path, params=params, **kwargs)
 
-    def _post(self, body_dict, **kwargs):
-        return self.get_api().post(self.get_path(), body_dict, **kwargs)
+    def _post(self, body_dict, path=None, **kwargs):
+        if path is None:
+            path = self.get_path()
+        return self.get_api().post(path, body_dict, **kwargs)
 
     def get_path(self):
         if self.path is None:

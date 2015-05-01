@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 import requests
 
 from .alert import AlertResource
@@ -25,8 +27,8 @@ class OpsGenieAPI:
 
     def get_url(self, path):
         if path.startswith("/"):
-            path = path[1:]
-        return "{0}{1}".format(self.url_base, path)
+            path=path[1:]
+        return urljoin(self.url_base, path)
     
     def get(self, path, params={}, **kwargs):
         url = self.get_url(path)
