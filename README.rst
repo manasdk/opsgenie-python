@@ -29,8 +29,7 @@ Examples
 ========
 
 
-Creating and Re-Assigning
-~~~~~~~~~~~~~~~~~~~~~~~~~
+**Creating and Re-Assigning**
 
 Try this out:
 
