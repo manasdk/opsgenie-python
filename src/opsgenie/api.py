@@ -30,17 +30,17 @@ class OpsGenieAPI:
             path=path[1:]
         return urljoin(self.url_base, path)
     
-    def get(self, path, params={}, **kwargs):
+    def get(self, path, params={}, process_opts={}):
         url = self.get_url(path)
         params["apiKey"] = self.api_key
         response = requests.get(url, params=params)
-        return self._process_response(response, **kwargs)
+        return self._process_response(response, **process_opts)
 
-    def post(self, path, body_dict, **kwargs):
+    def post(self, path, body_dict, process_opts={}):
         url = self.get_url(path)
         body_dict["apiKey"] = self.api_key
         response = requests.post(url, json=body_dict)
-        return self._process_response(response, **kwargs)
+        return self._process_response(response, **process_opts)
 
     def _process_response(self, response, return_body=True, raise_for_status=True):
         if raise_for_status:

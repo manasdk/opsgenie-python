@@ -8,15 +8,15 @@ class BaseResource:
     path = None
     api = None
 
-    def _get(self, params={}, path=None, **kwargs):
+    def _get(self, params={}, path=None, process_opts={}):
         if path is None:
             path = self.get_path()
-        return self.get_api().get(path, params=params, **kwargs)
+        return self.get_api().get(path, params=params, process_opts=process_opts)
 
-    def _post(self, body_dict, path=None, **kwargs):
+    def _post(self, body_dict, path=None, process_opts={}):
         if path is None:
             path = self.get_path()
-        return self.get_api().post(path, body_dict, **kwargs)
+        return self.get_api().post(path, body_dict, process_opts=process_opts)
 
     def get_path(self):
         if self.path is None:
