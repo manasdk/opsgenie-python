@@ -133,6 +133,29 @@ class TestAlertResource(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.resource.assign("not a real owner")
 
+    def test_renotify(self):
+        fake_id = str(uuid.uuid4())
+        fake_note = fauxfactory.gen_string("alphanumeric", random.randint(1,30))
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(
+                requests_mock.POST,
+                "https://api.opsgenie.com/v1/json/alert/renotify",
+                body=json.dumps({"status":"successful", "code":200}),
+                status=200,
+                content_type="application/json"
+            )
+            renotify_result = self.resource.renotify(alertId=fake_id, note=fake_note)
+            self.assertEqual(len(requests_mock.calls), 1)
+            renotify_request = requests_mock.calls[0].request
+            request_body = json.loads(assign_request.body)
+            self.assertEqual(request_body["alertId"], fake_id)
+            self.assertEqual(request_body["note"], fake_note)
+            self.assertEqual(renotify_result["status"], "successful")
+
+    def test_notify_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.renotify(tinyId=1234)
+        
     def generate_fake_alert(self, **set_values):
         alert = {
             "id":str(uuid.uuid4()),
