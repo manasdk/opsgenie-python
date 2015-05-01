@@ -4,7 +4,7 @@ class AlertResource(BaseResource):
     id_params = ["id", "alias", "tinyId"]
     def __init__(self, opsgenie_api):
         self.api = opsgenie_api
-        self.path = "alert"
+        self.path = "/alert"
 
     def create(self, message, **optional_create_params):
         id_param = self.contains_id_param(optional_create_params)
@@ -51,7 +51,8 @@ class AlertResource(BaseResource):
         if "alertId" not in params and "alias" not in params:
             raise ValueError("You must specify either alertId or alias")
         params["owner"] = owner
-        return self._post(params, path="/alert/assign")
+        path = "{0}/assign".format(self.path)
+        return self._post(params, path=path)
 
     def contains_id_param(self, params):
         for need_param in self.id_params:

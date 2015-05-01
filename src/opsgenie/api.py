@@ -28,6 +28,7 @@ class OpsGenieAPI:
     def get_url(self, path):
         if path.startswith("/"):
             path=path[1:]
+        path = path.replace("//", "/")
         return urljoin(self.url_base, path)
     
     def get(self, path, params={}, process_opts={}):
