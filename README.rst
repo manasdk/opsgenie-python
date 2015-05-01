@@ -54,10 +54,10 @@ The result should be something like this:
 
 .. code-block:: json
 
-    {'took': 166, 'status': 'successful', 'alertId': 'f75f423d-384b-4dc8-b040-f5d900507c5f', 'code': 200, 'message': 'alert created'}
+    {"took": 166, "status": "successful", "alertId": "f75f423d-384b-4dc8-b040-f5d900507c5f", "code": 200, "message": "alert created"}
 
 
-    {'took': 100, 'status': 'successful', 'code': 200}
+    {"took": 100, "status": "successful", "code": 200}
 
 
-    {'took': 6, 'source': '***REMOVED***', 'message': 'test', 'actions': [], 'count': 1, 'id': 'f75f423d-384b-4dc8-b040-f5d900507c5f', 'recipients': [], 'createdAt': 1430498993502001123, 'isSeen': False, 'tinyId': '1155', 'alias': 'f75f423d-384b-4dc8-b040-f5d900507c5f', 'status': 'open', 'description': '', 'tags': [], 'owner': 'Sam Johnson', 'teams': [], 'details': {}, 'acknowledged': False, 'updatedAt': 1430498993997001330, 'entity': '', 'systemData': {'integrationName': 'Direct Notifications', 'integrationId': '3be741a2-1bdd-4474-9046-c5539ce710d1', 'integrationType': 'API'}}
+    {"took": 6, "source": "***REMOVED***", "message": "test", "actions": [], "count": 1, "id": "f75f423d-384b-4dc8-b040-f5d900507c5f", "recipients": [], "createdAt": 1430498993502001123, "isSeen": False, "tinyId": "1155", "alias": "f75f423d-384b-4dc8-b040-f5d900507c5f", "status": "open", "description": "", "tags": [], "owner": "Sam Johnson", "teams": [], "details": {}, "acknowledged": False, "updatedAt": 1430498993997001330, "entity": "", "systemData": {"integrationName": "Direct Notifications", "integrationId": "3be741a2-1bdd-4474-9046-c5539ce710d1", "integrationType": "API"}}
