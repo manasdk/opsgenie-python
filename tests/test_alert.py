@@ -147,7 +147,7 @@ class TestAlertResource(unittest.TestCase):
             renotify_result = self.resource.renotify(alertId=fake_id, note=fake_note)
             self.assertEqual(len(requests_mock.calls), 1)
             renotify_request = requests_mock.calls[0].request
-            request_body = json.loads(assign_request.body)
+            request_body = json.loads(renotify_request.body)
             self.assertEqual(request_body["alertId"], fake_id)
             self.assertEqual(request_body["note"], fake_note)
             self.assertEqual(renotify_result["status"], "successful")

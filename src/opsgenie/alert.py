@@ -2,6 +2,10 @@ from .resource import BaseResource
 
 class AlertResource(BaseResource):
     id_params = ["id", "alias", "tinyId"]
+    
+    #Opsgenie uses inconsisten naming  /sigh
+    alert_id_params = ["alertId", "alias"]
+
     def __init__(self, opsgenie_api):
         self.api = opsgenie_api
         self.path = "/alert"
@@ -47,17 +51,27 @@ class AlertResource(BaseResource):
         return alerts_response["alerts"]
 
     def assign(self, owner, **params):
-        #according to the docs, tinyId is not available for this?
-        if "alertId" not in params and "alias" not in params:
-            raise ValueError("You must specify either alertId or alias")
+        self.raise_no_alert_id(params)
         params["owner"] = owner
-        path = "{0}/assign".format(self.path)
-        return self._post(params, path=path)
+        return self._post(params, append_path = "assign")
 
-    def contains_id_param(self, params):
-        for need_param in self.id_params:
+    def renotify(self, **params):
+        self.raise_no_alert_id(params)
+        return self._post(params, append_path = "renotify")
+
+    def contains_alert_id_param(self, params):
+        return self.contains_id_param(params, available=self.alert_id_params)
+
+    def contains_id_param(self, params, available=None):
+        if available is None:
+            available = self.id_params
+        for need_param in available:
             if need_param in params:
                 return need_param
         return None
 
+    def raise_no_alert_id(self, params):
+        if not self.contains_alert_id_param(params):
+            raise ValueError("You must specify one of the available ID params: {0}".format(
+                self.alert_id_params))
 
