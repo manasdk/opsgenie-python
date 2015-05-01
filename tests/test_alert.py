@@ -110,6 +110,28 @@ class TestAlertResource(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.resource.list(id=str(uuid.uuid4()))
 
+    def test_assign(self):
+        fake_id = str(uuid.uuid4())
+        fake_owner = fauxfactory.gen_string("alphanumeric", random.randint(1,30))
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(
+                requests_mock.GET,
+                "https://api.opsgenie.com/v1/json/alert/assign",
+                body=json.dumps({"status":"successful", "code":200}),
+                status=200,
+                content_type="application/json"
+            )
+            assign_result = self.resource.assign(fake_owner, alertdId=fake_id)
+            self.assertEqual(len(requests_mock.calls), 1)
+            assign_request = requests_mock.calls[0].request
+            request_body = json.loads(assign_request.body)
+            self.assertEqual(request_body["alertId"], fake_id)
+            self.assertEqual(request_body["owner"], fake_owner)
+            self.assertEqual(assign_result["status"], "successful")
+
+    def test_assign_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.assign("not a real owner")
 
     def generate_fake_alert(self, **set_values):
         alert = {
@@ -134,4 +156,5 @@ class TestAlertResource(unittest.TestCase):
         for set_key, set_val in set_values.items():
             alert[sey_key] = set_val
         return alert
+
         
