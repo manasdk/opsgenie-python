@@ -30,8 +30,7 @@ Examples
 
 
 Creating and Re-Assigning
--------------------------
-
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Try this out:
 
