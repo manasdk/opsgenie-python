@@ -176,6 +176,10 @@ class TestAlertResource(unittest.TestCase):
             self.assertEqual(request_body["note"], fake_note)
             self.assertEqual(request_body["recipient"], fake_recipient)
             self.assertEqual(add_recipient_result["status"], "successful")
+
+    def test_add_recipient_id_error(self):
+        with self.assertRaises(ValueError):
+            self.resource.add_recipient("foo", tinyId=1234)
             
         
     def generate_fake_alert(self, **set_values):
