@@ -59,6 +59,11 @@ class AlertResource(BaseResource):
         self.raise_no_alert_id(params)
         return self._post(params, append_path = "renotify")
 
+    def add_recipient(self, recipient, **params):
+        self.raise_no_alert_id(params)
+        params["recipient"] = recipient
+        return self._post(params, append_path = "recipient")
+
     def contains_alert_id_param(self, params):
         return self.contains_id_param(params, available=self.alert_id_params)
 
