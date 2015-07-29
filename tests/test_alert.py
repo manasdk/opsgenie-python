@@ -35,10 +35,6 @@ class TestAlertResource(unittest.TestCase):
             for request_key, request_value in check_request_vals.items():
                 self.assertEqual(alert_request[request_key], request_value)
 
-    def test_create_id_error(self):
-        with self.assertRaises(ValueError):
-            self.resource.create("foo message", id=str(uuid.uuid4()))
-
     def test_update(self):
         alert_id = str(uuid.uuid4())
         response_body = json.dumps(

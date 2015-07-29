@@ -11,11 +11,6 @@ class AlertResource(BaseResource):
         self.path = "/alert"
 
     def create(self, message, **optional_create_params):
-        id_param = self.contains_id_param(optional_create_params)
-        if id_param is not None:
-            raise ValueError("You specified the ID parameter '{0}'.  This will cause"
-                "the API to update the specified alert instead of creating one.  Did you mean to"
-                "call {1}.update() instead?".format(id_param, self.__class__.__name__))
         alert_dict = optional_create_params
         alert_dict["message"] = message
         response_body = self._post(alert_dict)
