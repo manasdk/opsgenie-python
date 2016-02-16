@@ -1,2 +1,2 @@
 echo "Running pylint"
-find src/opsgenie -name "*.py" -exec pylint -E {} \+
+find src/opsgenie -name "*.py" -exec pylint -E --rcfile=./.pylintrc {} \+

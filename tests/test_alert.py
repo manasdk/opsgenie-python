@@ -1,12 +1,12 @@
 import json
 import random
 import unittest
-import urllib
 import uuid
 
 import fauxfactory
 import responses
 
+from six.moves.urllib import parse
 from opsgenie.api import OpsGenieAPI
 
 class TestAlertResource(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestAlertResource(unittest.TestCase):
     def test_update(self):
         alert_id = str(uuid.uuid4())
         response_body = json.dumps(
-            {'message': 'alert created', 'code': 200, 'status': 'successful', 
+            {'message': 'alert created', 'code': 200, 'status': 'successful',
             'alertId': alert_id, 'took': 126})
         with responses.RequestsMock() as requests_mock:
             requests_mock.add(
@@ -72,8 +72,8 @@ class TestAlertResource(unittest.TestCase):
             )
             alert_result = self.resource.get(id=alert_id)
             alert_request = requests_mock.calls[0].request
-            query_string = urllib.parse.urlparse(alert_request.path_url).query
-            request_params = urllib.parse.parse_qs(query_string)
+            query_string = parse.urlparse(alert_request.path_url).query
+            request_params = parse.parse_qs(query_string)
             self.assertEqual(request_params["id"][0], alert_id)
             for alert_key, alert_val in fake_alert.items():
                 self.assertEqual(alert_result[alert_key], alert_val)
@@ -81,7 +81,7 @@ class TestAlertResource(unittest.TestCase):
     def test_get_id_error(self):
         with self.assertRaises(ValueError):
             self.resource.get()
-            
+
     def test_list(self):
         fake_alerts_list = [self.generate_fake_alert() for x in range(0, random.randint(0,5))]
         with responses.RequestsMock() as requests_mock:
@@ -97,8 +97,8 @@ class TestAlertResource(unittest.TestCase):
             alerts_response = self.api.get_resource("alert").list(status="unacked")
             alerts_request = requests_mock.calls[0].request
             self.assertEqual(len(requests_mock.calls), 1)
-            query_string = urllib.parse.urlparse(alerts_request.path_url).query
-            request_params = urllib.parse.parse_qs(query_string)
+            query_string = parse.urlparse(alerts_request.path_url).query
+            request_params = parse.parse_qs(query_string)
             self.assertEqual(request_params["status"][0], "unacked")
             self.assertEqual(alerts_response, fake_alerts_list)
 
@@ -176,8 +176,8 @@ class TestAlertResource(unittest.TestCase):
     def test_add_recipient_id_error(self):
         with self.assertRaises(ValueError):
             self.resource.add_recipient("foo", tinyId=1234)
-            
-        
+
+
     def generate_fake_alert(self, **set_values):
         alert = {
             "id":str(uuid.uuid4()),
@@ -185,13 +185,13 @@ class TestAlertResource(unittest.TestCase):
             "message":fauxfactory.gen_string("alphanumeric", random.randint(1,130)),
             "alias":fauxfactory.gen_string("alphanumeric", random.randint(1,30)),
             "description":fauxfactory.gen_string("alphanumeric", random.randint(1,15000)),
-            "recipients":[fauxfactory.gen_string("alphanumeric", random.randint(1,30)) 
+            "recipients":[fauxfactory.gen_string("alphanumeric", random.randint(1,30))
                 for x in range(0, random.randint(0,5))],
             #No actions at this time check back later
             "source":fauxfactory.gen_string("alphanumeric", random.randint(1,30)),
             "tags":",".join([fauxfactory.gen_string("alphanumeric", random.randint(1,30))
                 for x in range(0, random.randint(0,5))]),
-            "details":{fauxfactory.gen_string("alphanumeric", random.randint(1,30)): 
+            "details":{fauxfactory.gen_string("alphanumeric", random.randint(1,30)):
                 fauxfactory.gen_string("alphanumeric", random.randint(1,30)) for x in range(
                     0, random.randint(0,5))},
             "entity":fauxfactory.gen_string("alphanumeric", random.randint(1,30)),
@@ -202,4 +202,4 @@ class TestAlertResource(unittest.TestCase):
             alert[sey_key] = set_val
         return alert
 
-        
+

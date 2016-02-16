@@ -1,4 +1,4 @@
-from urllib.parse import urljoin
+from six.moves.urllib.parse import urljoin
 
 import requests
 
@@ -30,7 +30,7 @@ class OpsGenieAPI:
             path=path[1:]
         path = path.replace("//", "/")
         return urljoin(self.url_base, path)
-    
+
     def get(self, path, params={}, process_opts={}):
         url = self.get_url(path)
         params["apiKey"] = self.api_key

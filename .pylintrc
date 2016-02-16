@@ -1,0 +1,4 @@
+[TYPECHECK]
+# Note: This modules are manipulated during the runtime so we can't detect all the properties during
+# static analysis
+ignored-modules=six,six.moves

@@ -2,7 +2,7 @@ from .resource import BaseResource
 
 class AlertResource(BaseResource):
     id_params = ["id", "alias", "tinyId"]
-    
+
     #Opsgenie uses inconsisten naming  /sigh
     alert_id_params = ["alertId", "alias"]
 

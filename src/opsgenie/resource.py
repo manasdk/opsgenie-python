@@ -1,8 +1,9 @@
-from urllib.parse import urljoin
+from six.moves.urllib.parse import urljoin
+
 
 class BaseResource:
     """Provides a common base for resource classes
-    
+
     Resources inheriting this must set self.path and self.api
     """
     path = None
